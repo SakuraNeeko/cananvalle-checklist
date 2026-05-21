@@ -1,0 +1,25 @@
+.page  { display:flex; flex-direction:column; min-height:100vh; background:#f7f8f5 }
+.header {
+  background:#1a5c2e; color:#fff;
+  padding:18px 20px;
+  display:flex; align-items:center; gap:14px;
+}
+.back  { background:none; border:none; color:#fff; font-size:14px; cursor:pointer; padding:4px 0 }
+.title { margin:0; font-size:20px; font-weight:600 }
+.body  { padding:20px 20px; display:flex; flex-direction:column }
+.sectionLabel { font-size:10px; letter-spacing:.15em; color:#888; font-weight:600; margin-bottom:8px }
+.card {
+  background:#fff; border-radius:10px;
+  padding:13px 16px; margin-bottom:8px;
+  cursor:pointer; border:1px solid #e5e8e2;
+  transition:box-shadow .15s, transform .1s;
+  display:flex; flex-direction:column; gap:4px;
+}
+.card:hover { box-shadow:0 4px 14px rgba(0,0,0,.08); transform:translateY(-1px) }
+.row  { display:flex; justify-content:space-between; align-items:center }
+.name { font-size:14px; font-weight:500; color:#111 }
+.date { font-size:11px; color:#999 }
+.badgeClosed { font-size:11px; font-weight:600; color:#155724; background:#d4edda; padding:2px 8px; border-radius:20px }
+.badgeOpen   { font-size:11px; font-weight:500; color:#856404; background:#fff3cd; padding:2px 8px; border-radius:20px }
+.empty { padding:60px 20px; text-align:center; color:#999 }
+.emptyIcon { font-size:48px; margin-bottom:12px }

@@ -1,0 +1,101 @@
+.page { display:flex; flex-direction:column; min-height:100vh; background:#f7f8f5 }
+
+.header {
+  background:#1a5c2e; color:#fff;
+  padding:14px 16px;
+  display:flex; align-items:center; gap:10px;
+  position:sticky; top:0; z-index:10;
+}
+.back { background:none; border:none; color:#fff; font-size:14px; cursor:pointer; padding:4px 0; flex-shrink:0 }
+.headerInfo { flex:1; display:flex; flex-direction:column; gap:3px; min-width:0 }
+.headerTitle { font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.badgeClosed { font-size:10px; color:#a8ffbb; width:fit-content }
+.badgeOpen   { font-size:10px; color:#ffe08a; width:fit-content }
+.headerActions { display:flex; gap:6px; flex-shrink:0 }
+.btnSave { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:15px }
+.btnDl   { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:15px }
+
+.tabs { display:flex; background:#fff; border-bottom:1px solid #e5e8e2; overflow-x:auto }
+.tab {
+  flex:1; min-width:60px; padding:10px 6px; border:none; background:none;
+  font-size:13px; color:#666; cursor:pointer; border-bottom:2.5px solid transparent;
+  white-space:nowrap; font-family:inherit;
+}
+.tabActive { color:#1a5c2e; border-bottom-color:#1a5c2e; font-weight:600 }
+
+.legend { padding:6px 14px; background:#edf4ee; border-bottom:1px solid #d5e8d8; font-size:12px; color:#555; cursor:pointer }
+.legendGrid { display:grid; grid-template-columns:1fr 1fr; gap:3px 12px; margin-top:6px; padding-bottom:4px }
+.legendGrid span { font-size:11px }
+
+.body { padding:12px 14px; display:flex; flex-direction:column; gap:10px }
+
+.card {
+  background:#fff; border-radius:12px;
+  border:1px solid #e5e8e2;
+  padding:12px 14px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.cardHeader { display:flex; justify-content:space-between; align-items:flex-start; gap:8px }
+.workerName { font-size:13px; font-weight:600; color:#111; line-height:1.3; flex:1 }
+.pct        { font-size:13px; font-weight:700; flex-shrink:0 }
+.pctGood    { color:#155724 }
+.pctWarn    { color:#856404 }
+.pctBad     { color:#721c24 }
+
+.bloqueRow { display:flex; align-items:center; gap:8px }
+.bloqueStatic { font-size:12px; color:#666 }
+.fieldLabel { font-size:11px; color:#888; white-space:nowrap; flex-shrink:0; text-transform:uppercase; letter-spacing:.04em }
+
+.input {
+  flex:1; padding:7px 10px; border:1px solid #ddd; border-radius:6px;
+  font-size:13px; font-family:inherit; background:#fafafa; outline:none; color:#111;
+}
+.input:focus { border-color:#1a5c2e }
+
+.critGrid {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:4px;
+}
+.critOk, .critNo, .critNd {
+  padding:5px 2px; border-radius:6px; font-size:11px;
+  text-align:center; font-weight:500; cursor:pointer;
+  border:none; font-family:inherit;
+}
+.critOk { background:#d4edda; color:#155724; border:1px solid #b8dbc4 }
+.critNo { background:#f8d7da; color:#721c24; border:1px solid #e8b8bc }
+.critNd { background:#f0f0f0; color:#aaa; border:1px solid #e0e0e0 }
+
+.obs { width:100%; padding:8px 10px; border:1px solid #ddd; border-radius:6px; font-size:12px; font-family:inherit; resize:vertical; background:#fafafa; color:#111 }
+.obs:focus { outline:none; border-color:#1a5c2e }
+.obsStatic { font-size:12px; color:#666; font-style:italic }
+
+.sigRow  { display:flex; align-items:center; gap:10px }
+.sigImg  { height:42px; border:1px solid #ddd; border-radius:5px; background:#fff }
+.btnSig  { font-size:12px; padding:6px 12px; border:1px solid #1a5c2e; border-radius:6px; background:#fff; color:#1a5c2e; cursor:pointer; font-family:inherit }
+.noSig   { font-size:12px; color:#bbb }
+
+.footCard {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  background:#fff; border-radius:10px; border:1px solid #e5e8e2;
+  padding:12px 14px;
+}
+.footField { display:flex; flex-direction:column; gap:5px }
+.footVal   { font-size:13px; font-weight:500; color:#111 }
+
+.bottomActions { display:flex; flex-direction:column; gap:8px }
+.btnSaveMain {
+  padding:13px; background:#fff; color:#1a5c2e;
+  border:1.5px solid #1a5c2e; border-radius:10px;
+  font-size:14px; font-weight:500; cursor:pointer; font-family:inherit;
+}
+.btnSaveMain:disabled { opacity:.5; cursor:not-allowed }
+.btnClose {
+  padding:13px; background:#1a5c2e; color:#fff;
+  border:none; border-radius:10px;
+  font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;
+}
+.btnClose:disabled { opacity:.5; cursor:not-allowed }
+.btnDlMain {
+  width:100%; padding:13px; background:#1a5c2e; color:#fff;
+  border:none; border-radius:10px;
+  font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;
+}

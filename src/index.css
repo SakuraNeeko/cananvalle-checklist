@@ -1,0 +1,40 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green:      #1a5c2e;
+  --green-dark: #145024;
+  --green-bg:   #f0f7f2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  height: 100%;
+  background: #f7f8f5;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #111;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100%;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button { cursor: pointer }
+
+details > summary { list-style: none }
+details > summary::-webkit-details-marker { display: none }

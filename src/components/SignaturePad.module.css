@@ -1,0 +1,48 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.header { display: flex; flex-direction: column; gap: 3px }
+.title  { font-size: 18px; font-weight: 600; color: #111; margin: 0 }
+.sub    { font-size: 12px; color: #666; margin: 0 }
+.hint   { font-size: 13px; color: #555; margin: 0 }
+.canvas {
+  width: 100%;
+  border: 2px solid #1a5c2e;
+  border-radius: 8px;
+  touch-action: none;
+  cursor: crosshair;
+  background: #fff;
+  display: block;
+}
+.actions { display: flex; gap: 8px; align-items: center }
+.btnClear  { padding: 8px 14px; border: 1px solid #ddd; border-radius: 6px; background: #f5f5f5; color: #555; cursor: pointer; font-size: 13px }
+.btnCancel { padding: 8px 14px; border: 1px solid #ddd; border-radius: 6px; background: #fff; color: #333; cursor: pointer; font-size: 13px }
+.btnSave {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #1a5c2e;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btnSave:disabled { opacity: 0.4; cursor: not-allowed }
