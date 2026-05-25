@@ -1,0 +1,132 @@
+.page { display:flex; flex-direction:column; min-height:100vh; background:#f7f8f5 }
+
+.header {
+  background:#8b1a1a; color:#fff;
+  padding:14px 16px;
+  display:flex; align-items:center; gap:10px;
+  position:sticky; top:0; z-index:10;
+}
+.back { background:none; border:none; color:#fff; font-size:14px; cursor:pointer; padding:4px 0; flex-shrink:0 }
+.headerInfo { flex:1; display:flex; flex-direction:column; gap:3px; min-width:0 }
+.headerTitle { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.badgeClosed { font-size:10px; color:#ffb3b3; width:fit-content }
+.badgeOpen   { font-size:10px; color:#ffe08a; width:fit-content }
+.headerActions { display:flex; gap:6px; flex-shrink:0 }
+.btnSaveHdr { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.3); color:#fff; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:15px }
+
+/* Tabs */
+.tabs { display:flex; background:#fff; border-bottom:1px solid #e5e8e2; overflow-x:auto }
+.tab { flex:1; min-width:60px; padding:10px 6px; border:none; background:none; font-size:13px; color:#666; cursor:pointer; border-bottom:2.5px solid transparent; white-space:nowrap; font-family:inherit }
+.tabActive { color:#8b1a1a; border-bottom-color:#8b1a1a; font-weight:600 }
+
+/* Section toggle */
+.sectionToggle { display:flex; background:#fff8f8; border-bottom:1px solid #f0dada; gap:0 }
+.secBtn    { flex:1; padding:10px; border:none; background:none; font-size:13px; color:#888; cursor:pointer; font-family:inherit; border-bottom:2.5px solid transparent }
+.secActive { flex:1; padding:10px; border:none; background:none; font-size:13px; color:#8b1a1a; font-weight:600; cursor:pointer; font-family:inherit; border-bottom:2.5px solid #8b1a1a }
+
+/* Body */
+.body { padding:12px 14px; display:flex; flex-direction:column; gap:10px }
+
+/* Cards */
+.card {
+  background:#fff; border-radius:12px;
+  border:1px solid #ecdcdc;
+  padding:12px 14px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.cardHeader { display:flex; justify-content:space-between; align-items:flex-start; gap:8px }
+.workerName { font-size:13px; font-weight:600; color:#111; line-height:1.3; flex:1 }
+
+.fnOk   { font-size:12px; font-weight:700; color:#155724; background:#d4edda; padding:2px 7px; border-radius:10px; flex-shrink:0 }
+.fnBad  { font-size:12px; font-weight:700; color:#721c24; background:#f8d7da; padding:2px 7px; border-radius:10px; flex-shrink:0 }
+.fnOkText  { color:#155724; font-weight:700 }
+.fnBadText { color:#721c24; font-weight:700 }
+
+.pct      { font-size:13px; font-weight:700; flex-shrink:0 }
+.pctGood  { color:#155724 }
+.pctWarn  { color:#856404 }
+.pctBad   { color:#721c24 }
+
+/* Field row */
+.fieldRow  { display:flex; align-items:center; gap:8px }
+.fieldLabel { font-size:11px; color:#888; white-space:nowrap; flex-shrink:0; text-transform:uppercase; letter-spacing:.04em }
+.fieldVal   { font-size:13px; color:#111; font-weight:500 }
+
+.input {
+  flex:1; padding:7px 10px; border:1px solid #e0d0d0; border-radius:6px;
+  font-size:13px; font-family:inherit; background:#fdfafa; outline:none; color:#111;
+}
+.input:focus { border-color:#8b1a1a }
+
+/* Quality grid */
+.qualGrid {
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;
+}
+.qualField { display:flex; flex-direction:column; gap:3px }
+.qualLabel { font-size:9.5px; color:#888; text-transform:uppercase; letter-spacing:.03em; line-height:1.2 }
+.qualInput {
+  padding:5px 8px; border:1px solid #e0d0d0; border-radius:5px;
+  font-size:13px; font-family:inherit; background:#fdfafa; text-align:center; outline:none; color:#111; width:100%;
+}
+.qualInput:focus { border-color:#8b1a1a }
+.qualVal { font-size:13px; font-weight:500; color:#111; padding:5px 0 }
+
+/* Criteria grid - process section */
+.critGrid { display:flex; flex-direction:column; gap:4px }
+.critOk, .critNo, .critNd {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 10px; border-radius:7px;
+  font-size:12px; cursor:pointer; border:none;
+  font-family:inherit; text-align:left; width:100%;
+}
+.critOk { background:#d4edda; color:#155724; border:1px solid #b8dbc4 }
+.critNo { background:#f8d7da; color:#721c24; border:1px solid #e8b8bc }
+.critNd { background:#f5f5f5; color:#aaa;    border:1px solid #e8e8e8 }
+.critNum  { font-weight:700; font-size:11px; flex-shrink:0; width:16px }
+.critName { flex:1; font-weight:500 }
+
+/* Obs / sig */
+.obs { width:100%; padding:8px 10px; border:1px solid #e0d0d0; border-radius:6px; font-size:12px; font-family:inherit; resize:vertical; background:#fdfafa; color:#111 }
+.obs:focus { outline:none; border-color:#8b1a1a }
+.obsStatic { font-size:12px; color:#666; font-style:italic }
+.sigRow  { display:flex; align-items:center; gap:10px }
+.sigImg  { height:42px; border:1px solid #e0d0d0; border-radius:5px; background:#fff }
+.btnSig  { font-size:12px; padding:6px 12px; border:1px solid #8b1a1a; border-radius:6px; background:#fff; color:#8b1a1a; cursor:pointer; font-family:inherit }
+.noSig   { font-size:12px; color:#bbb }
+
+/* Footer */
+.footCard {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  background:#fff; border-radius:10px; border:1px solid #ecdcdc;
+  padding:12px 14px;
+}
+.footField { display:flex; flex-direction:column; gap:5px }
+.footVal   { font-size:13px; font-weight:500; color:#111 }
+
+/* Actions */
+.bottomActions { display:flex; flex-direction:column; gap:8px }
+.btnSaveMain {
+  padding:13px; background:#fff; color:#8b1a1a;
+  border:1.5px solid #8b1a1a; border-radius:10px;
+  font-size:14px; font-weight:500; cursor:pointer; font-family:inherit;
+}
+.btnSaveMain:disabled { opacity:.5; cursor:not-allowed }
+.btnClose {
+  padding:13px; background:#8b1a1a; color:#fff;
+  border:none; border-radius:10px;
+  font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;
+}
+.btnClose:disabled { opacity:.5; cursor:not-allowed }
+.btnDlMain {
+  width:100%; padding:13px; background:#8b1a1a; color:#fff;
+  border:none; border-radius:10px;
+  font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;
+}
+.autoCalc {
+  font-weight: 700;
+  color: #8b1a1a;
+  background: #fdf0f0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px dashed #e8b3b3;
+}

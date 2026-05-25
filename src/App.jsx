@@ -1,17 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
-import Home       from "./components/Home.jsx";
-import ReportForm from "./components/ReportForm.jsx";
-import ReportList from "./components/ReportList.jsx";
-import ReportView from "./components/ReportView.jsx";
+import Home        from "./components/Home.jsx";
+import ReportForm  from "./components/ReportForm.jsx";
+import ReportList  from "./components/ReportList.jsx";
+import ReportView  from "./components/ReportView.jsx";
+import CosechaView from "./components/CosechaView.jsx";
 import {
-  fetchReports,
-  fetchReport,
-  createReport,
-  saveReport,
-  closeReport as closeReportDB,
-  deleteReport,
+  fetchReports, fetchReport, createReport,
+  saveReport, closeReport as closeReportDB, deleteReport,
 } from "./lib/supabase.js";
-import { downloadReport } from "./lib/reportGen.js";
+import { downloadReport        } from "./lib/reportGen.js";
+import { downloadCosechaReport } from "./lib/cosechaReportGen.js";
 
 export default function App() {
   const [screen,   setScreen]   = useState("home");
@@ -33,8 +31,13 @@ export default function App() {
 
   useEffect(() => { loadReports(); }, []);
 
-  // ─── Actions ─────────────────────────────────────────────────────────────
+  // ─── Helpers ─────────────────────────────────────────────────────────────
+  const dlReport = (r) => {
+    if (r.tipo === "cosecha") downloadCosechaReport(r);
+    else downloadReport(r);
+  };
 
+  // ─── Actions ─────────────────────────────────────────────────────────────
   const handleCreate = async (newReport) => {
     setLoading(true);
     try {
@@ -82,7 +85,7 @@ export default function App() {
       setReport(updated);
       setReadOnly(true);
       await loadReports();
-      downloadReport(updated);
+      dlReport(updated);
       tip("Reporte cerrado y descargado ✓");
     } catch { tip("Error al cerrar el reporte"); }
     setSaving(false);
@@ -96,16 +99,25 @@ export default function App() {
     } catch { tip("Error al eliminar el reporte"); }
   };
 
-  const handleDownload = () => {
-    if (report) downloadReport(report);
+  const handleDownload = () => { if (report) dlReport(report); };
+
+  const backScreen = () => {
+    setScreen(reports.some((r) => r.id === report?.id) ? "list" : "home");
+    loadReports();
   };
 
-  // ─── Render ──────────────────────────────────────────────────────────────
+  const commonViewProps = {
+    report, readOnly, saving,
+    onBack: backScreen,
+    onChange: setReport,
+    onSave: handleSave,
+    onClose: handleClose,
+    onDownload: handleDownload,
+  };
 
   return (
     <div style={{ maxWidth: 540, margin: "0 auto", minHeight: "100vh", position: "relative" }}>
 
-      {/* Loading overlay */}
       {loading && (
         <div style={{
           position:"fixed", inset:0, background:"rgba(255,255,255,.75)",
@@ -116,11 +128,10 @@ export default function App() {
         </div>
       )}
 
-      {/* Toast */}
       {toast && (
         <div style={{
           position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
-          background:"#1a5c2e", color:"#fff", padding:"10px 22px",
+          background:"#333", color:"#fff", padding:"10px 22px",
           borderRadius:40, fontSize:13, fontWeight:500, zIndex:3000,
           boxShadow:"0 4px 20px rgba(0,0,0,.2)", whiteSpace:"nowrap",
           pointerEvents:"none",
@@ -156,16 +167,9 @@ export default function App() {
       )}
 
       {screen === "report" && report && (
-        <ReportView
-          report={report}
-          readOnly={readOnly}
-          saving={saving}
-          onBack={()  => { setScreen(reports.some((r) => r.id === report.id) ? "list" : "home"); loadReports(); }}
-          onChange={setReport}
-          onSave={handleSave}
-          onClose={handleClose}
-          onDownload={handleDownload}
-        />
+        report.tipo === "cosecha"
+          ? <CosechaView {...commonViewProps} />
+          : <ReportView  {...commonViewProps} />
       )}
     </div>
   );

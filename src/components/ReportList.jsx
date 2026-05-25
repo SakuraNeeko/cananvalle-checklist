@@ -24,9 +24,14 @@ export default function ReportList({ reports, onBack, onOpen, onDelete }) {
     <div className={styles.card}>
       <div className={styles.cardBody} onClick={() => onOpen(r.id)}>
         <div className={styles.row}>
-          <span className={styles.name}>
-            Finca {r.finca} &middot; Semana {r.semana}/{r.year}
-          </span>
+          <div className={styles.nameCol}>
+            <span className={r.tipo === "cosecha" ? styles.tipoCosecha : styles.tipoCultivo}>
+              {r.tipo === "cosecha" ? "🌹 Cosecha" : "🌿 Cultivo"}
+            </span>
+            <span className={styles.name}>
+              Finca {r.finca} &middot; Semana {r.semana}/{r.year}
+            </span>
+          </div>
           <span className={r.closed ? styles.badgeClosed : styles.badgeOpen}>
             {r.closed ? "✓ Cerrado" : "En progreso"}
           </span>

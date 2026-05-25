@@ -5,8 +5,8 @@ export default function Home({ recents, onNew, onList, onOpen }) {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logo}>CANANVALLE S.A.</div>
-        <h1 className={styles.title}>Check List<br />Cultivo</h1>
-        <div className={styles.code}>CU-CN-001 · Revisión 002</div>
+        <h1 className={styles.title}>Check List<br />Cultivo & Cosecha</h1>
+        <div className={styles.code}>CU-CN-001 / CU-CN-002 · Revisión 002</div>
       </header>
 
       <div className={styles.actions}>
@@ -23,14 +23,19 @@ export default function Home({ recents, onNew, onList, onOpen }) {
       {recents.length > 0 && (
         <section className={styles.recents}>
           <div className={styles.sectionLabel}>RECIENTES</div>
-          {recents.slice(0, 3).map((r) => (
+          {recents.slice(0, 5).map((r) => (
             <div key={r.id} className={styles.card} onClick={() => onOpen(r.id)}>
               <div className={styles.cardMain}>
-                <span className={styles.cardTitle}>
-                  Finca {r.finca} &middot; Semana {r.semana}/{r.year}
-                </span>
+                <div className={styles.cardLeft}>
+                  <span className={r.tipo === "cosecha" ? styles.tipoCosecha : styles.tipoCultivo}>
+                    {r.tipo === "cosecha" ? "🌹 Cosecha" : "🌿 Cultivo"}
+                  </span>
+                  <span className={styles.cardTitle}>
+                    Finca {r.finca} · Semana {r.semana}/{r.year}
+                  </span>
+                </div>
                 <span className={r.closed ? styles.badgeClosed : styles.badgeOpen}>
-                  {r.closed ? "✓ Cerrado" : "En progreso"}
+                  {r.closed ? "✓" : "…"}
                 </span>
               </div>
               <span className={styles.cardDate}>
