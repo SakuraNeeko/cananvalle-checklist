@@ -9,8 +9,6 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── Reports ──────────────────────────────────────────────────────────────────
-
 export async function fetchReports() {
   const { data, error } = await supabase
     .from("reports")
@@ -22,18 +20,17 @@ export async function fetchReports() {
 
 export async function fetchReport(id) {
   const { data, error } = await supabase
-    .from("reports")
-    .select("*")
-    .eq("id", id)
-    .single();
+    .from("reports").select("*").eq("id", id).single();
   if (error) throw error;
   return data;
 }
 
+// Accepts client-generated id for offline-first creates
 export async function createReport(report) {
   const { data, error } = await supabase
     .from("reports")
     .insert({
+      id:     report.id,          // ← client UUID for offline-first
       tipo:   report.tipo   || "cultivo",
       finca:  report.finca,
       semana: report.semana,
@@ -41,19 +38,14 @@ export async function createReport(report) {
       closed: false,
       areas:  report.areas,
     })
-    .select()
-    .single();
+    .select().single();
   if (error) throw error;
   return data;
 }
 
 export async function saveReport(id, areas) {
   const { data, error } = await supabase
-    .from("reports")
-    .update({ areas })
-    .eq("id", id)
-    .select()
-    .single();
+    .from("reports").update({ areas }).eq("id", id).select().single();
   if (error) throw error;
   return data;
 }
@@ -62,9 +54,7 @@ export async function closeReport(id, areas) {
   const { data, error } = await supabase
     .from("reports")
     .update({ areas, closed: true, closed_at: new Date().toISOString() })
-    .eq("id", id)
-    .select()
-    .single();
+    .eq("id", id).select().single();
   if (error) throw error;
   return data;
 }

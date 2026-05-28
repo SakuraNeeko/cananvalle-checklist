@@ -6,43 +6,32 @@ import styles from "./ReportView.module.css";
 const cycleValue = (v) => (v === null ? 1 : v === 1 ? 0 : null);
 
 export default function ReportView({
-  report,
-  readOnly,
-  saving,
-  onBack,
-  onSave,
-  onClose,
-  onDownload,
-  onChange,
+  report, readOnly, saving,
+  onBack, onSave, onClose, onDownload, onChange,
 }) {
-  const [activeArea, setActiveArea] = useState("1");
-  const [sigTarget,  setSigTarget]  = useState(null); // {areaKey, rowIdx}
+  const [activeArea,  setActiveArea]  = useState("1");
+  const [sigTarget,   setSigTarget]   = useState(null);
+  const [editingName, setEditingName] = useState(null); // rowIdx being edited
 
   const area = report.areas[activeArea];
 
-  // Mutators
-  const updRow = (areaKey, ri, field, value) => {
-    const rows = area.rows.map((r, i) =>
-      i === ri ? { ...r, [field]: value } : r
-    );
-    onChange({ ...report, areas: { ...report.areas, [areaKey]: { ...area, rows } } });
+  // ─── Mutators ────────────────────────────────────────────────────────────
+  const updRow = (ri, field, value) => {
+    const rows = area.rows.map((r, i) => i === ri ? { ...r, [field]: value } : r);
+    onChange({ ...report, areas: { ...report.areas, [activeArea]: { ...area, rows } } });
   };
 
   const updCrit = (ri, ci) => {
     const rows = area.rows.map((r, i) => {
       if (i !== ri) return r;
-      const criteria = r.criteria.map((v, j) => (j === ci ? cycleValue(v) : v));
+      const criteria = r.criteria.map((v, j) => j === ci ? cycleValue(v) : v);
       return { ...r, criteria };
     });
     onChange({ ...report, areas: { ...report.areas, [activeArea]: { ...area, rows } } });
   };
 
-  const updArea = (field, value) => {
-    onChange({
-      ...report,
-      areas: { ...report.areas, [activeArea]: { ...area, [field]: value } },
-    });
-  };
+  const updArea = (field, value) =>
+    onChange({ ...report, areas: { ...report.areas, [activeArea]: { ...area, [field]: value } } });
 
   return (
     <div className={styles.page}>
@@ -50,31 +39,23 @@ export default function ReportView({
       <header className={styles.header}>
         <button className={styles.back} onClick={onBack}>← Atrás</button>
         <div className={styles.headerInfo}>
-          <span className={styles.headerTitle}>Finca {report.finca} · Sem. {report.semana}/{report.year}</span>
+          <span className={styles.headerTitle}>🌿 Cultivo · Finca {report.finca} · Sem. {report.semana}/{report.year}</span>
           <span className={report.closed ? styles.badgeClosed : styles.badgeOpen}>
             {report.closed ? "✓ Cerrado" : "En progreso"}
           </span>
         </div>
         <div className={styles.headerActions}>
-          {!readOnly && (
-            <button className={styles.btnSave} onClick={onSave} disabled={saving}>
-              {saving ? "…" : "💾"}
-            </button>
-          )}
-          {report.closed && (
-            <button className={styles.btnDl} onClick={onDownload} title="Descargar PDF">⬇️</button>
-          )}
+          {!readOnly && <button className={styles.btnSave} onClick={onSave} disabled={saving}>{saving ? "…" : "💾"}</button>}
+          {report.closed && <button className={styles.btnDl} onClick={onDownload}>⬇️</button>}
         </div>
       </header>
 
       {/* Area tabs */}
       <div className={styles.tabs}>
         {Object.entries(AREAS).map(([key, label]) => (
-          <button
-            key={key}
+          <button key={key}
             className={activeArea === key ? styles.tabActive : styles.tab}
-            onClick={() => setActiveArea(key)}
-          >
+            onClick={() => { setActiveArea(key); setEditingName(null); }}>
             {label.replace("ÁREA ", "A")}
           </button>
         ))}
@@ -84,33 +65,51 @@ export default function ReportView({
       <details className={styles.legend}>
         <summary>Ver criterios 1–15 ▾</summary>
         <div className={styles.legendGrid}>
-          {CRITERIA.map((c, i) => (
-            <span key={i}><b>{i + 1}.</b> {c}</span>
-          ))}
+          {CRITERIA.map((c, i) => <span key={i}><b>{i + 1}.</b> {c}</span>)}
         </div>
       </details>
 
       {/* Worker cards */}
       <div className={styles.body}>
         {area.rows.map((row, ri) => {
-          const s = calcScore(row);
+          const s      = calcScore(row);
           const pctCls = s.pct >= 80 ? styles.pctGood : s.pct >= 60 ? styles.pctWarn : styles.pctBad;
+          const isEditing = editingName === ri;
+
           return (
             <div key={ri} className={styles.card}>
+              {/* Name row */}
               <div className={styles.cardHeader}>
-                <span className={styles.workerName}>{row.nombre}</span>
+                <div className={styles.nameRow}>
+                  {isEditing ? (
+                    <input
+                      autoFocus
+                      className={styles.nameInput}
+                      value={row.nombre}
+                      onChange={e => updRow(ri, "nombre", e.target.value)}
+                      onBlur={() => setEditingName(null)}
+                      onKeyDown={e => { if (e.key === "Enter") setEditingName(null); }}
+                    />
+                  ) : (
+                    <span className={styles.workerName}>{row.nombre}</span>
+                  )}
+                  {!readOnly && !isEditing && (
+                    <button
+                      className={styles.btnEditName}
+                      title="Editar nombre"
+                      onClick={() => setEditingName(ri)}
+                    >✏️</button>
+                  )}
+                </div>
                 <span className={`${styles.pct} ${pctCls}`}>{s.cumple}/15 · {s.pct}%</span>
               </div>
 
+              {/* Bloque */}
               {!readOnly ? (
                 <div className={styles.bloqueRow}>
                   <span className={styles.fieldLabel}>Bloque</span>
-                  <input
-                    className={styles.input}
-                    value={row.bloque}
-                    placeholder="—"
-                    onChange={e => updRow(activeArea, ri, "bloque", e.target.value)}
-                  />
+                  <input className={styles.input} value={row.bloque} placeholder="—"
+                    onChange={e => updRow(ri, "bloque", e.target.value)} />
                 </div>
               ) : row.bloque ? (
                 <div className={styles.bloqueStatic}>Bloque: {row.bloque}</div>
@@ -120,63 +119,40 @@ export default function ReportView({
               <div className={styles.critGrid}>
                 {row.criteria.map((v, ci) =>
                   readOnly ? (
-                    <div
-                      key={ci}
-                      className={
-                        v === 1 ? styles.critOk : v === 0 ? styles.critNo : styles.critNd
-                      }
-                    >
+                    <div key={ci} className={v === 1 ? styles.critOk : v === 0 ? styles.critNo : styles.critNd}>
                       {ci + 1} {v === 1 ? "✓" : v === 0 ? "✗" : "·"}
                     </div>
                   ) : (
-                    <button
-                      key={ci}
-                      className={
-                        v === 1 ? styles.critOk : v === 0 ? styles.critNo : styles.critNd
-                      }
-                      onClick={() => updCrit(ri, ci)}
-                      title={CRITERIA[ci]}
-                    >
+                    <button key={ci}
+                      className={v === 1 ? styles.critOk : v === 0 ? styles.critNo : styles.critNd}
+                      onClick={() => updCrit(ri, ci)} title={CRITERIA[ci]}>
                       {ci + 1} {v === 1 ? "✓" : v === 0 ? "✗" : "·"}
                     </button>
                   )
                 )}
               </div>
 
-              {/* Observations */}
+              {/* Obs */}
               {!readOnly ? (
-                <textarea
-                  className={styles.obs}
-                  rows={2}
-                  placeholder="Observaciones…"
-                  value={row.obs}
-                  onChange={e => updRow(activeArea, ri, "obs", e.target.value)}
-                />
+                <textarea className={styles.obs} rows={2} placeholder="Observaciones…"
+                  value={row.obs} onChange={e => updRow(ri, "obs", e.target.value)} />
               ) : row.obs ? (
                 <div className={styles.obsStatic}>"{row.obs}"</div>
               ) : null}
 
-              {/* Signature */}
+              {/* Firma */}
               <div className={styles.sigRow}>
                 {row.firma ? (
                   <>
                     <img src={row.firma} alt="firma" className={styles.sigImg} />
                     {!readOnly && (
-                      <button
-                        className={styles.btnSig}
-                        onClick={() => setSigTarget({ areaKey: activeArea, rowIdx: ri })}
-                      >
-                        Cambiar firma
-                      </button>
+                      <button className={styles.btnSig}
+                        onClick={() => setSigTarget({ areaKey: activeArea, rowIdx: ri })}>Cambiar firma</button>
                     )}
                   </>
                 ) : !readOnly ? (
-                  <button
-                    className={styles.btnSig}
-                    onClick={() => setSigTarget({ areaKey: activeArea, rowIdx: ri })}
-                  >
-                    ✏️ Capturar firma
-                  </button>
+                  <button className={styles.btnSig}
+                    onClick={() => setSigTarget({ areaKey: activeArea, rowIdx: ri })}>✏️ Capturar firma</button>
                 ) : (
                   <span className={styles.noSig}>Sin firma</span>
                 )}
@@ -189,21 +165,18 @@ export default function ReportView({
         <div className={styles.footCard}>
           <div className={styles.footField}>
             <span className={styles.fieldLabel}>Supervisor</span>
-            {!readOnly ? (
-              <input className={styles.input} value={area.supervisor}
-                onChange={e => updArea("supervisor", e.target.value)} />
-            ) : <span className={styles.footVal}>{area.supervisor || "—"}</span>}
+            {!readOnly
+              ? <input className={styles.input} value={area.supervisor} onChange={e => updArea("supervisor", e.target.value)} />
+              : <span className={styles.footVal}>{area.supervisor || "—"}</span>}
           </div>
           <div className={styles.footField}>
             <span className={styles.fieldLabel}>Jefe de finca</span>
-            {!readOnly ? (
-              <input className={styles.input} value={area.jefe}
-                onChange={e => updArea("jefe", e.target.value)} />
-            ) : <span className={styles.footVal}>{area.jefe || "—"}</span>}
+            {!readOnly
+              ? <input className={styles.input} value={area.jefe} onChange={e => updArea("jefe", e.target.value)} />
+              : <span className={styles.footVal}>{area.jefe || "—"}</span>}
           </div>
         </div>
 
-        {/* Actions */}
         {!readOnly && (
           <div className={styles.bottomActions}>
             <button className={styles.btnSaveMain} onClick={onSave} disabled={saving}>
@@ -216,9 +189,7 @@ export default function ReportView({
         )}
         {readOnly && (
           <div className={styles.bottomActions}>
-            <button className={styles.btnDlMain} onClick={onDownload}>
-              ⬇️ Descargar reporte (PDF)
-            </button>
+            <button className={styles.btnDlMain} onClick={onDownload}>⬇️ Descargar reporte (PDF)</button>
           </div>
         )}
         <div style={{ height: 32 }} />
@@ -234,13 +205,8 @@ export default function ReportView({
           onSave={(dataUrl) => {
             const { areaKey, rowIdx } = sigTarget;
             const aData = report.areas[areaKey];
-            const rows  = aData.rows.map((r, i) =>
-              i === rowIdx ? { ...r, firma: dataUrl } : r
-            );
-            onChange({
-              ...report,
-              areas: { ...report.areas, [areaKey]: { ...aData, rows } },
-            });
+            const rows  = aData.rows.map((r, i) => i !== rowIdx ? r : { ...r, firma: dataUrl });
+            onChange({ ...report, areas: { ...report.areas, [areaKey]: { ...aData, rows } } });
             setSigTarget(null);
           }}
         />

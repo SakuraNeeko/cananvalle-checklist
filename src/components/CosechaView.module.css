@@ -122,6 +122,41 @@
   border:none; border-radius:10px;
   font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;
 }
+
+/* ── Editable name ── */
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.nameInput {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1.5px solid #8b1a1a;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #111;
+  background: #fdf5f5;
+  outline: none;
+  min-width: 0;
+}
+.btnEditName {
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: opacity .15s;
+}
+.btnEditName:hover { opacity: 1 }
+
+/* ── Auto-calculated field ── */
 .autoCalc {
   font-weight: 700;
   color: #8b1a1a;
@@ -129,4 +164,5 @@
   padding: 4px 8px;
   border-radius: 5px;
   border: 1px dashed #e8b3b3;
+  display: inline-block;
 }

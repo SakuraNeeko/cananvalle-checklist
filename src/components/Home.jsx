@@ -1,12 +1,15 @@
 import styles from "./Home.module.css";
 
-export default function Home({ recents, onNew, onList, onOpen }) {
+export default function Home({ recents, online, onNew, onList, onOpen }) {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.logo}>CANANVALLE S.A.</div>
         <h1 className={styles.title}>Check List<br />Cultivo & Cosecha</h1>
         <div className={styles.code}>CU-CN-001 / CU-CN-002 · Revisión 002</div>
+        {!online && (
+          <div className={styles.offlineBadge}>📵 Modo sin conexión — los cambios se sincronizarán al reconectarse</div>
+        )}
       </header>
 
       <div className={styles.actions}>
@@ -40,7 +43,7 @@ export default function Home({ recents, onNew, onList, onOpen }) {
               </div>
               <span className={styles.cardDate}>
                 {new Date(r.created_at).toLocaleDateString("es-EC", {
-                  day: "2-digit", month: "short", year: "numeric"
+                  day: "2-digit", month: "short", year: "numeric",
                 })}
               </span>
             </div>
